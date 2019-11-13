@@ -1,4 +1,5 @@
 package com.character;
 
-public class CharacterType {
+public enum CharacterType {
+    Knight, Pyromancer, Rogue, Wizard
 }

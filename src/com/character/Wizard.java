@@ -4,8 +4,6 @@ import com.Ability.AbilityFactory;
 import com.Ability.AbilityType;
 import com.Location.Point;
 
-import javax.xml.stream.Location;
-
 import static com.Utils.Constants.*;
 public class Wizard extends Character {
     public Wizard(Point location) {

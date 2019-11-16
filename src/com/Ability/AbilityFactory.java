@@ -36,6 +36,8 @@ public class AbilityFactory {
             case Paralysis:
                 newAbility = new Paralysis();
                 break;
+            default:
+                newAbility = null;
         }
         return newAbility;
     }

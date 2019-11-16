@@ -1,21 +1,44 @@
 package com.Ability;
 
 
-abstract public class Ability {
+
+abstract public class Ability implements AbilityInterface{
     protected float baseDamage;
     protected float bonusBaseDmgPerLvl;
-    protected boolean stunning;
-    protected boolean futureEffect;
-    protected int effectiveDamage;
-
+    protected float levelDmg;
+    protected float effectiveBaseDmg;
     private AbilityType type;
-    public Ability(final float damage, final float damagePerLevel, final AbilityType abilityType,
-                   boolean stunningAbility, boolean futureEffectAbility){
+    protected float racialBonus;
+    protected float locationBonus;
+    public Ability(final float damage, final float damagePerLevel, final AbilityType abilityType){
         baseDamage = damage;
         bonusBaseDmgPerLvl = damagePerLevel;
         type = abilityType;
-        stunning = stunningAbility;
-        futureEffect = futureEffectAbility;
     }
-
+    public void computeLvlDamage(int level, final int takenDamage) {
+        levelDmg = baseDamage + bonusBaseDmgPerLvl * level;
+    }
+    public void setLocationBonus(final float cellTypeBonus) {
+        locationBonus = cellTypeBonus;
+    }
+    public void setRacialBonus(final float characterTypeBonus) {
+        racialBonus = characterTypeBonus;
+    }
+    //debugging
+    public float getLocationBonus() {
+        return locationBonus;
+    }
+    //debugging
+    public float getRacialBonus() {
+        return racialBonus;
+    }
+    public void addBonuses() {
+        effectiveBaseDmg = Math.round(Math.round(levelDmg * (1 + locationBonus)) * (1  + racialBonus));
+    }
+    public float getLevelDamage() {
+        return levelDmg;
+    }
+    public float getEffectiveBaseDmg() {
+        return effectiveBaseDmg;
+    }
 }

@@ -1,18 +1,34 @@
 package com.character;
 
+import com.Location.Point;
 
 public class CharacterFactory {
-    CharacterFactory factory = null;
-    CharacterFactory getInstance() {
+    private static CharacterFactory factory = null;
+    public static CharacterFactory getInstance() {
         if (factory == null) {
             factory = new CharacterFactory();
         }
         return factory;
     }
     private CharacterFactory() { }
-    Character createCharacter(CharacterType type) {
-        Character character = null;
-        return  character;
-
+    public Character createCharacter(char type, Point location) {
+        Character newCharacter = null;
+        switch (type) {
+            case  'P':
+                newCharacter = new Pyromancer(location);
+                break;
+            case 'K':
+                newCharacter = new Knight(location);
+                break;
+            case 'W':
+                newCharacter = new Wizard(location);
+                break;
+            case 'R':
+                newCharacter = new Rogue(location);
+                break;
+            default:
+                newCharacter = null;
+        }
+        return newCharacter;
     }
 }

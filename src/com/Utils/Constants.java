@@ -1,5 +1,7 @@
 package com.Utils;
 
+import com.Location.Point;
+
 public final class Constants {
     public static final int ZERO = 0;
 
@@ -55,6 +57,10 @@ public final class Constants {
     public static final int ONE = 1;
     public static final int FULL_PERCENTAGE = 100;
     public static final float FULL_DMG = 1f;
+    public static final int XP_REF = 200;
+    public static final int XP_AMP = 40;
+    public static final int LVL_UP_XP_BASE = 250;
+    public static final int LVL_UP_AMP = 50;
     public static final int THREE = 3;
     public static final float AMPLIFIER = 1.5f;
     public static final float DR_HP_DEP = 0.3f;
@@ -100,7 +106,10 @@ public final class Constants {
     public static final float PL_PYRO_BONUS = 0.20f;
     public static final float PL_WIZARD_BONUS = 0.25f;
 
-    public static final int X_POS = 2;
-    public static final int Y_POS = 4;
+    public static final Point UP = new Point(-1, 0);
+    public static final Point DOWN = new Point(1, 0);
+    public static final Point LEFT = new Point(0, -1);
+    public static final Point RIGHT = new Point(0, 1);
+
 
 }

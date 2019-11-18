@@ -17,4 +17,12 @@ public class Point {
     public int getY() {
         return y;
     }
+    public void add(Point point) {
+        this.x += point.getX();
+        this.y = point.getY();
+    }
+    @Override
+    public String toString() {
+        return x + " " + y;
+    }
 }

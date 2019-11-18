@@ -2,6 +2,7 @@ package com.Game;
 
 import com.Location.Cell;
 import com.Location.CellFactory;
+import com.Location.Map;
 import com.Location.Point;
 import com.character.CharacterFactory;
 import com.character.Character;
@@ -23,19 +24,19 @@ public final class  GameInputLoader {
         int playersNumber = 0;
         String types = null;
         char cellType = 0;
-        Cell [][]Map = null;
+        Map map = null;
         List<Character> players = new ArrayList<>();
         try {
 
             rows = fs.nextInt();
             columns = fs.nextInt();
-            Map = new Cell[rows][columns];
+            map = new Map(rows, columns);
             CellFactory cellFactory = CellFactory.getInstance();
             for (int i = 0; i < rows; i++) {
                 types = fs.nextWord();
                 for (int j = 0; j < columns; j++) {
                     cellType  = types.charAt(j);
-                    Map[i][j] = cellFactory.createCell(cellType);
+                    map.setCell(cellFactory.createCell(cellType), i, j);
                 }
             }
             playersNumber = fs.nextInt();
@@ -52,6 +53,6 @@ public final class  GameInputLoader {
             e1.printStackTrace();
         }
 
-        return new GameInput(Map, players);
+        return new GameInput(map, players);
     }
 }

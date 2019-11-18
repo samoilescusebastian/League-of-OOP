@@ -1,6 +1,7 @@
 package com.Ability;
 
 
+import static com.Utils.Constants.ZERO;
 
 abstract public class Ability implements AbilityInterface{
     protected float baseDamage;
@@ -40,5 +41,10 @@ abstract public class Ability implements AbilityInterface{
     }
     public float getEffectiveBaseDmg() {
         return effectiveBaseDmg;
+    }
+    public void resetAbility() {
+        levelDmg = ZERO;
+        racialBonus = ZERO;
+        locationBonus = ZERO;
     }
 }

@@ -9,7 +9,7 @@ public class Pyromancer extends Character {
 
     public Pyromancer(Point Location) {
         super(PYRO_INIT_HP, PYRO_HP_PER_LVL, abilityFactory.createAbility(AbilityType.Fireblast),
-                abilityFactory.createAbility(AbilityType.Ignite), Location, CharacterType.Pyromancer);
+                abilityFactory.createAbility(AbilityType.Ignite), Location, 'P');
 
     }
     public void setLocationBonus(Volcanic cell) {

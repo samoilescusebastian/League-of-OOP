@@ -9,8 +9,9 @@ public class Main {
             fileio.FileSystem fs = new fileio.FileSystem(args[0], args[1]);
             GameInputLoader gameInputLoader = new GameInputLoader();
             GameInput gameInput = gameInputLoader.load(fs);
-            GameEngine newGame = new GameEngine(gameInput, fs);
-            newGame.startGame();
+            GameEngine game = new GameEngine(gameInput, fs);
+            game.startGame();
+            game.viewResults();
         } catch (IOException e) {
             e.printStackTrace();
         }

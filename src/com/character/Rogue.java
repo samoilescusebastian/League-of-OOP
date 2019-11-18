@@ -8,8 +8,7 @@ import static com.Utils.Constants.*;
 public class Rogue extends Character {
     public Rogue(Point location) {
         super(ROG_INIT_HP, ROG_HP_PER_LVL, abilityFactory.createAbility(AbilityType.Backstab),
-                abilityFactory.createAbility(AbilityType.Paralysis), location,
-                CharacterType.Rogue);
+                abilityFactory.createAbility(AbilityType.Paralysis), location, 'R');
     }
     public void setLocationBonus(Woods cell) {
         baseAbility.setLocationBonus(WOODS_BONUS);

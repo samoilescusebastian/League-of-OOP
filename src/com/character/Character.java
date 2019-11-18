@@ -7,6 +7,8 @@ import static com.Utils.Constants.*;
 
 public class Character implements CharacterInterface{
     protected static AbilityFactory abilityFactory = AbilityFactory.getInstance();
+    private static int instances = 0;
+    protected int ID;
     protected Point location;
     protected float DoTDamage;
     protected float DoTLife;
@@ -20,9 +22,12 @@ public class Character implements CharacterInterface{
     protected int takenDamage;
     protected Ability baseAbility;
     protected Ability specialAbility;
-    protected CharacterType type;
+    protected char type;
     Character(final int HP, final int HPPerLvl, Ability baseAbility, Ability specialAbility,
-              Point location, CharacterType type) {
+              Point location, char type) {
+        ID = instances++;
+        DoTDamage = ZERO;
+        DoTLife = ZERO;
         XP = ZERO;
         LVL = ZERO;
         paralysisLife = ZERO;
@@ -108,19 +113,62 @@ public class Character implements CharacterInterface{
     }
 
     void loadBaseDamage(Ability ability, final float factor) {
-        System.out.println(ability.getLevelDamage() * factor);
+//        System.out.println(Math.round(ability.getLevelDamage() * factor));
         takenDamage += Math.round((ability.getLevelDamage())) * factor;
         ability.addBonuses();
-        System.out.println(ability.getEffectiveBaseDmg() * factor);
+//        System.out.println(Math.round(ability.getEffectiveBaseDmg() * factor));
         acceptDamage(Math.round(ability.getEffectiveBaseDmg() * factor));
     }
     void loadSpecialDamage(SpecialAbility ability) {
-        System.out.println(ability.getLocationBonus());
-        System.out.println(ability.getRacialBonus());
-        System.out.println(ability.getEffectiveRoundDmg());
+//        System.out.println(ability.getLocationBonus());
+//        System.out.println(ability.getRacialBonus());
+//        System.out.println(ability.getEffectiveRoundDmg());
         DoTDamage = ability.getEffectiveRoundDmg();
         DoTLife = ability.getDamageLife();
         paralysisLife = ability.getParalysisLife();
+//        System.out.println("-----------");
+    }
+    public void move(char direction) {
+        if (paralysisLife >= 0) {
+            return;
+        }
+        switch(direction){
+            case 'U':
+                location.add(UP);
+                break;
+            case 'D':
+                location.add(DOWN);
+                break;
+            case 'L':
+                location.add(LEFT);
+                break;
+            case 'R':
+                location.add(RIGHT);
+                break;
+            default:
+                break;
+
+        }
+    }
+    public void attack(Character victim, Map map) {
+        Ability baseAbility = this.getBaseAbility();
+        Ability specialAbility = this.getSpecialAbility();
+        baseAbility.computeLvlDamage(LVL, takenDamage);
+        specialAbility.computeLvlDamage(LVL, takenDamage);
+        baseAbility.strike(victim);
+        specialAbility.strike(victim);
+        if (victim.getHP() <= ZERO) {
+            victim.markAsDead(map);
+            XP += Math.max(ZERO, XP_REF - (this.LVL - victim.getLVL() * XP_AMP));
+            updateLevel();
+        }
+    }
+    public void resetAbilities() {
+        baseAbility.resetAbility();
+        specialAbility.resetAbility();
+    }
+    public void resetTakenDamage() {
+        takenDamage = ZERO;
     }
     public Ability getBaseAbility() {
         return baseAbility;
@@ -128,8 +176,51 @@ public class Character implements CharacterInterface{
     public Ability getSpecialAbility() {
         return specialAbility;
     }
-    public CharacterType getType() {
+    public char getType() {
         return type;
     }
+    public Point getLocation() {
+        return location;
+    }
+    public int getID() {
+        return ID;
+    }
+    public int getParalysisLife() {
+        return paralysisLife;
+    }
+    public int getHP() {
+        return HP;
+    }
+    public int getLVL() {
+        return LVL;
+    }
+    public void decreaseParalysisLife() {
+        paralysisLife--;
+    }
 
+    public boolean takeDoT() {
+        if (DoTLife > 0) {
+            HP -= DoTDamage;
+            DoTLife--;
+        }
+        return HP <= 0;
+    }
+    public void markAsDead(Map map) {
+        Cell cell = map.getCell(location.getX(), location.getY());
+        cell.deleteCharacter(ID);
+        alive = false;
+    }
+    public void updateLevel() {
+        if (XP >= LVL_UP_XP_BASE) {
+            LVL = ((XP - LVL_UP_XP_BASE) / LVL_UP_AMP) + 1;
+        }
+    }
+
+    @Override
+    public String toString() {
+        if (alive) {
+            return type + " " + LVL + " " + XP + " " + HP + " " + location;
+        }
+        return type + " dead";
+    }
 }

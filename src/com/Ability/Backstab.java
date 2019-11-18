@@ -17,14 +17,31 @@ public class Backstab extends Ability {
     public void strike(Character player) {
         player.acceptAbility(this);
     }
-    public void addBonuses() {
+//    public void addBonuses() {
+//        if (used % THREE == 0) {
+//            if (critical == true) {
+//                effectiveBaseDmg = Math.round(Math.round(Math.round(levelDmg * AMPLIFIER)* (1 + locationBonus)) * (1  + racialBonus));
+//            } else {
+//                super.addBonuses();
+//            }
+//        }
+//        used++;
+//    }
+
+    @Override
+    public void computeLvlDamage(int level, int takenDamage) {
+        super.computeLvlDamage(level, takenDamage);
         if (used % THREE == 0) {
             if (critical == true) {
-                effectiveBaseDmg = Math.round(Math.round(Math.round(levelDmg * AMPLIFIER)* (1 + locationBonus)) * (1  + racialBonus));
-            } else {
-                super.addBonuses();
+                levelDmg = Math.round(levelDmg * AMPLIFIER);
             }
         }
         used++;
+    }
+
+    @Override
+    public void resetAbility() {
+        super.resetAbility();
+        critical = false;
     }
 }

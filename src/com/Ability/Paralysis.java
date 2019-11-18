@@ -31,4 +31,10 @@ public class Paralysis extends SpecialAbility{
     public void strike(Character player) {
         player.acceptAbility(this);
     }
+
+    @Override
+    public void resetAbility() {
+        super.resetAbility();
+        roundOvertime = THREE;
+    }
 }

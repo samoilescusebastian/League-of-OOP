@@ -1,5 +1,7 @@
 package com.Ability;
 
+import static com.Utils.Constants.ZERO;
+
 abstract public class SpecialAbility extends Ability {
     protected float roundDamage;
     protected float bonusRoundDmgPerLvl;
@@ -24,5 +26,9 @@ abstract public class SpecialAbility extends Ability {
     }
     public int getParalysisLife() {
         return paralysisLife;
+    }
+    public void resetAbility() {
+        super.resetAbility();
+        effectiveRoundDmg = ZERO;
     }
 }

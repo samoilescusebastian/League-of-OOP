@@ -1,6 +1,5 @@
 package com.Game;
 
-import com.Location.Cell;
 import com.Location.CellFactory;
 import com.Location.Map;
 import com.Location.Point;
@@ -10,15 +9,15 @@ import com.character.Character;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.Utils.Constants.*;
+import static com.Utils.Constants.ZERO;
 
 public final class  GameInputLoader {
 
-    GameInputLoader() {
+    public GameInputLoader() {
 
     }
 
-    public GameInput load(fileio.FileSystem fs) {
+    public GameInput load(final fileio.FileSystem fs) {
         int rows = 0;
         int columns = 0;
         int playersNumber = 0;

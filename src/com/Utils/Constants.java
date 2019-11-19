@@ -3,6 +3,8 @@ package com.Utils;
 import com.Location.Point;
 
 public final class Constants {
+    private Constants() {
+    }
     public static final int ZERO = 0;
 
     public static final int FB_DAMAGE = 350;
@@ -66,6 +68,7 @@ public final class Constants {
     public static final float DR_HP_DEP = 0.3f;
     public static final int OVERTIME_BONUS = 3;
     public static final int NEUTRAL = 1;
+    public static final int NO_EFFECT = -1;
 
     public static final float FB_ROGUE_BONUS = -0.2f;
     public static final float FB_KNIGHT_BONUS = 0.2f;
@@ -86,6 +89,7 @@ public final class Constants {
     public static final float SL_KNIGHT_BONUS = 0.2f;
     public static final float SL_PYRO_BONUS = -0.10f;
     public static final float SL_WIZARD_BONUS = 0.05f;
+    public static final int SL_PARALYSIS = 1;
 
     public static final float DR_ROGUE_BONUS = -0.2f;
     public static final float DR_KNIGHT_BONUS = 0.2f;
@@ -100,6 +104,7 @@ public final class Constants {
     public static final float BS_KNIGHT_BONUS = -0.10f;
     public static final float BS_PYRO_BONUS = 0.25f;
     public static final float BS_WIZARD_BONUS = 0.25f;
+    public static final int BS_CRITICAL_LOAD_FACTOR = 3;
 
     public static final float PL_ROGUE_BONUS = -0.10f;
     public static final float PL_KNIGHT_BONUS = -0.20f;

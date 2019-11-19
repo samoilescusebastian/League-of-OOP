@@ -1,13 +1,13 @@
 package com.Location;
 
-public class Point {
+public final class Point {
     private int x;
     private int y;
     public Point(final int x, final int y) {
         this.x = x;
         this.y = y;
     }
-    public Point(Point point) {
+    public Point(final Point point) {
         this.x = point.getX();
         this.y = point.getY();
     }
@@ -17,9 +17,9 @@ public class Point {
     public int getY() {
         return y;
     }
-    public void add(Point point) {
+    public void add(final Point point) {
         this.x += point.getX();
-        this.y = point.getY();
+        this.y += point.getY();
     }
     @Override
     public String toString() {

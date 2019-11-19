@@ -1,18 +1,15 @@
 package com.Ability;
 
-import com.character.Character;
-import com.character.Knight;
-import com.character.Pyromancer;
-import com.character.Rogue;
-import com.character.Wizard;
+import com.character.Character;;
 
-import static com.Utils.Constants.*;
+import static com.Utils.Constants.FB_DAMAGE;
+import static com.Utils.Constants.FB_DMG_PER_LVL;
 
-public class Fireblast extends Ability {
+public final class Fireblast extends Ability {
     public Fireblast() {
-        super(FB_DAMAGE,FB_DMG_PER_LVL, AbilityType.Fireblast);
+        super(FB_DAMAGE, FB_DMG_PER_LVL, AbilityType.Fireblast);
     }
-    public void strike(Character player) {
+    public void strike(final Character player) {
         player.acceptAbility(this);
     }
 

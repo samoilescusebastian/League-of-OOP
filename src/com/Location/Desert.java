@@ -1,8 +1,8 @@
 package com.Location;
 
 import com.character.Character;
-public class Desert extends Cell{
-        public void sendBonus(Character character) {
+public final class Desert extends Cell {
+        public void sendBonus(final Character character) {
             character.setLocationBonus(this);
         }
 }

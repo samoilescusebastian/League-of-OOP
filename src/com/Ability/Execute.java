@@ -1,34 +1,33 @@
 package com.Ability;
 import com.character.Character;
-import com.character.Knight;
-import com.character.Pyromancer;
-import com.character.Rogue;
-import com.character.Wizard;
 
-import static com.Utils.Constants.*;
-
+import static com.Utils.Constants.EX_DAMAGE;
+import static com.Utils.Constants.EX_DMG_PER_LVL;
+import static com.Utils.Constants.EX_PROC_HP;
+import static com.Utils.Constants.EX_PROC_HP_PER_LVL;
+import static com.Utils.Constants.EX_PROC_HP_LIMIT;
 public class Execute extends Ability {
-    private float effectiveHPPercentage;
-    private float HPPercentage;
-    private float HPPercentageBonusPerLvl;
-    private float HPLimit;
+    private float effectiveHpPercentage;
+    private float hpPercentage;
+    private float hpPercentageBonusPerLvl;
+    private float hpLimit;
     public Execute() {
         super(EX_DAMAGE, EX_DMG_PER_LVL, AbilityType.Execute);
-        HPPercentage = EX_PROC_HP;
-        HPPercentageBonusPerLvl = EX_PROC_HP_PER_LVL;
-        HPLimit = EX_PROC_HP_LIMIT;
+        hpPercentage = EX_PROC_HP;
+        hpPercentageBonusPerLvl = EX_PROC_HP_PER_LVL;
+        hpLimit = EX_PROC_HP_LIMIT;
     }
-    public void computeLvlDamage(int level, final int takenDamage) {
+    public final void computeLvlDamage(final int level, final int takenDamage) {
         super.computeLvlDamage(level, takenDamage);
-        effectiveHPPercentage = HPPercentage + HPPercentageBonusPerLvl * level;
-        if (effectiveHPPercentage > HPLimit) {
-            effectiveHPPercentage = HPLimit;
+        effectiveHpPercentage = hpPercentage + hpPercentageBonusPerLvl * level;
+        if (effectiveHpPercentage > hpLimit) {
+            effectiveHpPercentage = hpLimit;
         }
     }
-    public float getEffectiveHPPercentage() {
-        return effectiveHPPercentage;
+    public final float getEffectiveHpPercentage() {
+        return effectiveHpPercentage;
     }
-    public void strike(Character player) {
+    public final void strike(final Character player) {
         player.acceptAbility(this);
     }
 

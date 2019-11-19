@@ -2,8 +2,13 @@ package com.Ability;
 
 import com.character.Character;
 
-import static com.Utils.Constants.*;
-public class Backstab extends Ability {
+import static com.Utils.Constants.BS_DAMAGE;
+import static com.Utils.Constants.BS_DMG_PER_LVL;
+import static com.Utils.Constants.BS_CRITICAL_LOAD_FACTOR;
+import static com.Utils.Constants.AMPLIFIER;
+import static com.Utils.Constants.ZERO;
+
+public final class Backstab extends Ability {
     private int used;
     private boolean critical;
     public Backstab() {
@@ -14,31 +19,19 @@ public class Backstab extends Ability {
     public void setCritical(final boolean criticalHit) {
         critical = criticalHit;
     }
-    public void strike(Character player) {
+    public void strike(final Character player) {
         player.acceptAbility(this);
     }
-//    public void addBonuses() {
-//        if (used % THREE == 0) {
-//            if (critical == true) {
-//                effectiveBaseDmg = Math.round(Math.round(Math.round(levelDmg * AMPLIFIER)* (1 + locationBonus)) * (1  + racialBonus));
-//            } else {
-//                super.addBonuses();
-//            }
-//        }
-//        used++;
-//    }
-
     @Override
-    public void computeLvlDamage(int level, int takenDamage) {
+    public void computeLvlDamage(final int level, final int takenDamage) {
         super.computeLvlDamage(level, takenDamage);
-        if (used % THREE == 0) {
-            if (critical == true) {
+        if (used % BS_CRITICAL_LOAD_FACTOR == 0) {
+            if (critical) {
                 levelDmg = Math.round(levelDmg * AMPLIFIER);
             }
         }
         used++;
     }
-
     @Override
     public void resetAbility() {
         super.resetAbility();

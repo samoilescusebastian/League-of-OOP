@@ -6,23 +6,28 @@ import com.character.Character;
 import java.util.ArrayList;
 import java.util.List;
 
-abstract public class Cell implements CellInterface{
-    List<Integer> characters;
+ public abstract class Cell {
+    private List<Integer> characters;
+     /**
+      * hero get a location bonus based of its type.
+      * accept method of a concrete element
+      */
+    public abstract void sendBonus(Character character);
     public Cell() {
         characters = new ArrayList<>();
     }
-    public void addCharacter(final int playerID) {
+    public final void addCharacter(final int playerID) {
         characters.add(playerID);
     }
-    public void deleteCharacter(final int playerID) {
+    public final void deleteCharacter(final int playerID) {
         characters.remove(Integer.valueOf(playerID));
     }
-    public List<Integer> getList() {
+    public final List<Integer> getList() {
         return characters;
     }
-    public boolean isInConflict(Character player) {
+    public final boolean isInConflict(final Character player) {
         for (int i = 0; i < characters.size(); i++) {
-            if (player.getID() > characters.get(i)) {
+            if (player.getId() > characters.get(i)) {
                 return true;
             }
         }

@@ -1,6 +1,6 @@
 package com.Location;
 
-public class CellFactory {
+public final class CellFactory {
         private static CellFactory factory = null;
         public static CellFactory getInstance() {
             if (factory == null) {
@@ -9,7 +9,7 @@ public class CellFactory {
             return factory;
         }
         private CellFactory() { }
-        public Cell createCell(char type) {
+        public Cell createCell(final char type) {
             Cell newCell;
             switch (type) {
                 case  'W':

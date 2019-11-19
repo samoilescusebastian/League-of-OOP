@@ -1,21 +1,19 @@
 package com.Ability;
 
 import com.character.Character;
-import com.character.Knight;
-import com.character.Pyromancer;
-import com.character.Rogue;
-import com.character.Wizard;
 
-import static com.Utils.Constants.*;
-public class Drain extends Ability{
+import static com.Utils.Constants.DR_PROC_PER_LEVEL;
+import static com.Utils.Constants.DR_HP_PROC;
+import static com.Utils.Constants.FULL_DMG;
+public final class Drain extends Ability {
     public Drain() {
         super(DR_HP_PROC, DR_PROC_PER_LEVEL, AbilityType.Drain);
 
     }
-    public void strike(Character player) {
+    public void strike(final Character player) {
         player.acceptAbility(this);
     }
     public void addBonuses() {
-        effectiveBaseDmg = Math.round(Math.round(Math.round(levelDmg * 100) * (1 + locationBonus)) * (1  + racialBonus)) /(100f);
+        effectiveBaseDmg = ((levelDmg) * (FULL_DMG + locationBonus)) * (FULL_DMG  + racialBonus);
     }
 }

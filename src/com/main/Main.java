@@ -1,9 +1,15 @@
-package com.Game;
+package com.main;
+
+import com.Game.GameEngine;
+import com.Game.GameInput;
+import com.Game.GameInputLoader;
 
 import java.io.IOException;
 
-public class Main {
-    public static void main(String[] args) {
+final class Main {
+    private Main() {
+    }
+    public static void main(final String[] args) {
 
         try {
             fileio.FileSystem fs = new fileio.FileSystem(args[0], args[1]);
@@ -12,8 +18,10 @@ public class Main {
             GameEngine game = new GameEngine(gameInput, fs);
             game.startGame();
             game.viewResults();
+            fs.close();
         } catch (IOException e) {
             e.printStackTrace();
+
         }
     }
 }

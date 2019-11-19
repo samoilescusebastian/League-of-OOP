@@ -1,6 +1,6 @@
 package com.Ability;
 
-public class AbilityFactory {
+public final class AbilityFactory {
     private static AbilityFactory  factory = null;
     private AbilityFactory() { };
     public static AbilityFactory getInstance() {
@@ -9,7 +9,7 @@ public class AbilityFactory {
         }
         return factory;
     }
-    public Ability createAbility(AbilityType type) {
+    public Ability createAbility(final AbilityType type) {
         Ability newAbility = null;
         switch (type) {
             case Fireblast:

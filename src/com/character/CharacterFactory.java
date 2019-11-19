@@ -2,7 +2,7 @@ package com.character;
 
 import com.Location.Point;
 
-public class CharacterFactory {
+public final class CharacterFactory {
     private static CharacterFactory factory = null;
     public static CharacterFactory getInstance() {
         if (factory == null) {
@@ -11,7 +11,7 @@ public class CharacterFactory {
         return factory;
     }
     private CharacterFactory() { }
-    public Character createCharacter(char type, Point location) {
+    public Character createCharacter(final char type, final Point location) {
         Character newCharacter = null;
         switch (type) {
             case  'P':

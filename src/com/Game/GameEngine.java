@@ -4,7 +4,6 @@ import com.Location.Cell;
 import com.Location.Map;
 import com.Location.Point;
 import com.character.Character;
-import com.character.CharacterType;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,25 +16,30 @@ import static com.Utils.Constants.ZERO;
 public class GameEngine {
     private GameInput gameInput;
     private  fileio.FileSystem fs;
-    public GameEngine(GameInput gameInput, fileio.FileSystem fs) {
+    public GameEngine(final GameInput gameInput, final fileio.FileSystem fs) {
         this.gameInput = gameInput;
         this.fs = fs;
 
     }
-
+    /**
+     * main game logic.
+     */
  public void startGame() throws IOException {
 
         Map map = gameInput.getMap();
         List<Character> players = gameInput.getPlayers();
         map.setPlayers(players);
         int roundsNumber = fs.nextInt();
-        String moves ;
+        String moves;
         for (int i = ZERO; i < roundsNumber; i++) {
             applyRoundEffects(players, map);
             moves = fs.nextWord();
             List<Cell> cellConflicts = new ArrayList<>();
             for (int j = ZERO; j < players.size(); j++) {
                 Character currentPlayer = players.get(j);
+                if (currentPlayer.isDead()) {
+                    continue;
+                }
                 map.deletePlayer(currentPlayer);
                 currentPlayer.move(moves.charAt(j));
                 map.addPlayer(currentPlayer);
@@ -47,40 +51,29 @@ public class GameEngine {
             }
             startBattles(cellConflicts, players, map);
         }
-//     int rows = map.getRowsNumber();
-//     int columns = map.getColumnsNumber();
-//     for (int i = 0; i < rows; i++) {
-//         for (int j = 0; j < columns;j++) {
-//             System.out.println(map.getCell(i, j).getList());
-//         }
-//     }
-     //DEBUGGING
-//     Cell[][] Map = gameInput.getMap();
-//     List<Character> players  = gameInput.getPlayers();
-
-//     for (int i = 0; i < players.size(); i++) {
-//         System.out.println(players.get(i).getType());
-//     }
-
  }
- public void viewResults() {
+    /**
+     * print players infos at the end of the game.
+     */
+ public void viewResults() throws IOException {
         List<Character> players = gameInput.getPlayers();
         for (int i = 0; i < players.size(); i++) {
-            System.out.println(players.get(i));
+            fs.writeWord(players.get(i).toString());
+            fs.writeWord("\n");
         }
  }
- private void applyRoundEffects(List<Character> players, Map map) {
+ private void applyRoundEffects(final List<Character> players, final Map map) {
         for (int i = 0; i < players.size(); i++) {
             Character currentPlayer = players.get(i);
-            if(currentPlayer.getParalysisLife() > 0) {
+            if (currentPlayer.getParalysisLife() >= 0) {
                 currentPlayer.decreaseParalysisLife();
             }
-            if(currentPlayer.takeDoT()) {
+            if (currentPlayer.takeDoT()) {
                 currentPlayer.markAsDead(map);
             }
         }
  }
- private void startBattles(List<Cell> battles, List<Character> players, Map map) {
+ private void startBattles(final List<Cell> battles, final List<Character> players, final Map map) {
         for (int i = 0; i < battles.size(); i++) {
             List<Integer> battlePlayers = battles.get(i).getList();
             sortPlayers(battlePlayers, players);
@@ -89,24 +82,30 @@ public class GameEngine {
             addLocationBonuses(battles.get(i), firstPlayer, secondPlayer);
             firstPlayer.attack(secondPlayer, map);
             secondPlayer.attack(firstPlayer, map);
+            updateLevels(firstPlayer, secondPlayer);
             resetEffects(firstPlayer, secondPlayer);
         }
  }
- private void resetEffects(Character playerA, Character playerB) {
+ private void resetEffects(final Character playerA, final Character playerB) {
         playerA.resetAbilities();
         playerA.resetTakenDamage();
         playerB.resetAbilities();
         playerB.resetTakenDamage();
 
  }
- private void sortPlayers(List<Integer> battlePlayers, List<Character> players) {
+ private void sortPlayers(final List<Integer> battlePlayers, final List<Character> players) {
         if (players.get(battlePlayers.get(ZERO)).getType() == 'W') {
             Collections.swap(battlePlayers, ONE, ZERO);
         }
 
  }
- private void addLocationBonuses(Cell cell, Character playerA, Character playerB) {
+ private void addLocationBonuses(final Cell cell, final Character playerA,
+                                 final Character playerB) {
         cell.sendBonus(playerA);
         cell.sendBonus(playerB);
+ }
+ private void updateLevels(final Character playerA, final Character playerB) {
+        playerA.updateLevel();
+        playerB.updateLevel();
  }
 }

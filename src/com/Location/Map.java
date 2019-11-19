@@ -2,8 +2,8 @@ package com.Location;
 
 import java.util.List;
 import com.character.Character;
-public class Map {
-    private Cell [][] map;
+public final class Map {
+    private Cell[][] map;
     private int rows;
     private int columns;
     public Map(final int n, final int m) {
@@ -23,19 +23,19 @@ public class Map {
     public Cell getCell(final int rowIndex, final int columnIndex) {
         return map[rowIndex][columnIndex];
     }
-    public void setPlayers(List<Character> players) {
+    public void setPlayers(final List<Character> players) {
         for (int i = 0; i < players.size(); i++) {
             Point location = players.get(i).getLocation();
-            map[location.getX()][location.getY()].addCharacter(players.get(i).getID());
+            map[location.getX()][location.getY()].addCharacter(players.get(i).getId());
         }
     }
-    public void addPlayer(Character player) {
+    public void addPlayer(final Character player) {
         Point location = player.getLocation();
-        map[location.getY()][location.getY()].addCharacter(player.getID());
+        map[location.getX()][location.getY()].addCharacter(player.getId());
     }
-    public void deletePlayer(Character player) {
+    public void deletePlayer(final Character player) {
         Point location = player.getLocation();
-        map[location.getX()][location.getY()].deleteCharacter(player.getID());
+        map[location.getX()][location.getY()].deleteCharacter(player.getId());
     }
 
 }

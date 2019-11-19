@@ -1,13 +1,9 @@
 package com.Location;
 
 import com.character.Character;
-import com.character.Knight;
-import com.character.Pyromancer;
-import com.character.Rogue;
-import com.character.Wizard;
 
-public class Land extends Cell {
-    public void sendBonus(Character character) {
+public final class Land extends Cell {
+    public void sendBonus(final Character character) {
         character.setLocationBonus(this);
     }
 }

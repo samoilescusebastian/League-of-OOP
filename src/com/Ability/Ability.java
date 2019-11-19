@@ -1,9 +1,12 @@
 package com.Ability;
 
 
+import com.character.Character;
+
+import static com.Utils.Constants.FULL_DMG;
 import static com.Utils.Constants.ZERO;
 
-abstract public class Ability implements AbilityInterface{
+public abstract class Ability {
     protected float baseDamage;
     protected float bonusBaseDmgPerLvl;
     protected float levelDmg;
@@ -11,37 +14,48 @@ abstract public class Ability implements AbilityInterface{
     private AbilityType type;
     protected float racialBonus;
     protected float locationBonus;
-    public Ability(final float damage, final float damagePerLevel, final AbilityType abilityType){
+
+    /**
+     * ability hits victim.
+     * accept method of a concrete element
+     */
+    public abstract void strike(Character player);
+    public Ability(final float damage, final float damagePerLevel, final AbilityType abilityType) {
         baseDamage = damage;
         bonusBaseDmgPerLvl = damagePerLevel;
         type = abilityType;
     }
-    public void computeLvlDamage(int level, final int takenDamage) {
+    /**
+     * compute ability damage based on hero's level.
+     */
+    public void computeLvlDamage(final int level, final int takenDamage) {
         levelDmg = baseDamage + bonusBaseDmgPerLvl * level;
     }
-    public void setLocationBonus(final float cellTypeBonus) {
+    public final void setLocationBonus(final float cellTypeBonus) {
         locationBonus = cellTypeBonus;
     }
-    public void setRacialBonus(final float characterTypeBonus) {
+    public final void setRacialBonus(final float characterTypeBonus) {
         racialBonus = characterTypeBonus;
     }
-    //debugging
-    public float getLocationBonus() {
+    public final float getLocationBonus() {
         return locationBonus;
     }
-    //debugging
-    public float getRacialBonus() {
-        return racialBonus;
-    }
+    /**
+     * add location and racial bonuses to level damage.
+     */
     public void addBonuses() {
-        effectiveBaseDmg = Math.round(Math.round(levelDmg * (1 + locationBonus)) * (1  + racialBonus));
+        effectiveBaseDmg = Math.round(Math.round(levelDmg * (FULL_DMG + locationBonus))
+                           * (FULL_DMG  + racialBonus));
     }
-    public float getLevelDamage() {
+    public final float getLevelDamage() {
         return levelDmg;
     }
-    public float getEffectiveBaseDmg() {
+    public final float getEffectiveBaseDmg() {
         return effectiveBaseDmg;
     }
+    /**
+     * reset ability to general form after hero used it in battle.
+     */
     public void resetAbility() {
         levelDmg = ZERO;
         racialBonus = ZERO;

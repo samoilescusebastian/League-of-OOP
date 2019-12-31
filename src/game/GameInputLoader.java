@@ -1,6 +1,7 @@
 package game;
 
-import javafx.util.Pair;
+import angel.Angel;
+import angel.AngelFactory;
 import location.CellFactory;
 import location.Map;
 import location.Point;
@@ -55,6 +56,7 @@ public final class  GameInputLoader {
                 rounds.add(new Round());
                 rounds.get(i).setMoves(fs.nextWord());
             }
+            AngelFactory angelFactory = AngelFactory.getInstance();
             for (int i = 0; i < roundsNumber; i++) {
                 int angels = fs.nextInt();
                 for (int j = 0; j < angels; j++) {
@@ -69,8 +71,7 @@ public final class  GameInputLoader {
                     coordinates = angelInfo.substring(angelTypeEnd + 1);
                     coordSeparator = coordinates.indexOf(',');
                     angelLocation = new Point(Integer.parseInt(coordinates.substring(0, coordSeparator)), Integer.parseInt(coordinates.substring(coordSeparator + 1)));
-                    Pair<String, Point> angel = new Pair<>(angelType, angelLocation);
-                    System.out.println(angelLocation);
+                    Angel angel = angelFactory.createAngel(angelType, angelLocation);
                     rounds.get(i).addAngel(angel);
                 }
             }

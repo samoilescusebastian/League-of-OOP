@@ -11,8 +11,18 @@ import ability.Slam;
 import ability.Fireblast;
 import location.Point;
 import location.Woods;
-import strategy.DamageStrategy;
-import strategy.HpStrategy;
+import angel.XPAngel;
+import angel.DarkAngel;
+import angel.DamageAngel;
+import angel.Dracula;
+import angel.GoodBoy;
+import angel.LevelUpAngel;
+import angel.LifeGiver;
+import angel.SmallAngel;
+import angel.Spawner;
+import angel.TheDoomer;
+
+import java.io.IOException;
 
 import static utils.Constants.*;
 
@@ -62,5 +72,58 @@ public final class Rogue extends Character {
     public final void chooseStrategy() {
         super.getBestStrategy(ROGUE_INF_HP, ROGUE_SUP_HP, ROGUE_HP_STRIP, ROGUE_ABILITIES_STRIP,
                 ROGUE_HP_SUPPLY, ROGUE_ABILITIES_SUPPLY);
+    }
+
+    public void acceptVisit(final DamageAngel angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += ROGUE_DMG_ANGEL_MODIFIER;
+
+    }
+    public void acceptVisit(final DarkAngel angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += ROGUE_DARK_ANGEL_MODIFIER;
+    }
+    public void acceptVisit(final Dracula angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += ROGUE_DMG_DRACULA_MODIFIER;
+       addHp(ROGUE_HP_DRACULA_MODIFIER);
+    }
+    public void acceptVisit(final GoodBoy angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += ROGUE_DMG_GOODBOY_MODIFIER;
+        addHp(ROGUE_HP_GOODBOY_MODIFIER);
+    }
+    public void acceptVisit(final LevelUpAngel angel) throws IOException {
+        angel.setHelpState(this);
+        int experience = computeNeededHP();
+        addExperience(experience);
+        updateLevel();
+        angelFactor += ROGUE_DMG_LU_ANGEL_MODIFIER;
+    }
+    public void acceptVisit(final LifeGiver angel) throws IOException {
+        angel.setHelpState(this);
+        addHp(ROGUE_LIFE_GIVER_ANGEL_MODIFIER);
+    }
+    public void acceptVisit(final SmallAngel angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += ROGUE_DMG_S_ANGEL_MODIFIER;
+        addHp(ROGUE_HP_S_ANGEL_MODIFIER);
+    }
+    public void acceptVisit(final Spawner angel) throws IOException {
+        if (!alive) {
+            angel.setHelpState(this);
+            setRespawnState();
+            alive = true;
+            currentHp = ROGUE_HP_SPAWNER_MODIFIER;
+        }
+    }
+    public void acceptVisit(final TheDoomer angel) throws IOException {
+        angel.setHelpState(this);
+        markAsDead();
+    }
+    public void acceptVisit(final XPAngel angel) throws IOException {
+        angel.setHelpState(this);
+        addExperience(ROGUE_XP_ANGEL_MODIFIER);
+        updateLevel();
     }
 }

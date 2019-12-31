@@ -11,7 +11,7 @@ BAD_CHECKSTYLE=0
 function cleanHomework
 {
 	find . -name "*.class" -type f -delete
-	rm -rf "$RESOURCES_DIRECTORY/out"
+	# rm -rf "$RESOURCES_DIRECTORY/out"
 }
 
 function compileHomework

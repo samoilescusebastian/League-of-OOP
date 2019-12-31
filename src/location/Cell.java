@@ -22,12 +22,12 @@ import java.util.List;
     public final void deleteCharacter(final int playerID) {
         characters.remove(Integer.valueOf(playerID));
     }
-    public final List<Integer> getList() {
+    public final List<Integer> getCharacters() {
         return characters;
     }
-    public final boolean isInConflict(final Character player) {
+    public final boolean isInConflict(final Character player, final List<Character> players) {
         for (int i = 0; i < characters.size(); i++) {
-            if (player.getId() > characters.get(i)) {
+            if (player.getId() > characters.get(i) && !players.get(characters.get(i)).isDead()) {
                 return true;
             }
         }

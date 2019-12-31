@@ -14,7 +14,7 @@ public final class CharacterFactory {
     public Character createCharacter(final char type, final Point location) {
         Character newCharacter = null;
         switch (type) {
-            case  'P':
+            case 'P':
                 newCharacter = new Pyromancer(location);
                 break;
             case 'K':

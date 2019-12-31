@@ -33,6 +33,9 @@ public abstract class Ability {
     public void computeLvlDamage(final int level, final int takenDamage) {
         levelDmg = baseDamage + bonusBaseDmgPerLvl * level;
     }
+    public final void setAngelFactor(final float damageFactor) {
+        angelFactor = damageFactor;
+    }
     public final void setStrategyFactor(final float abilityModifier) {
         strategyFactor = abilityModifier;
     }
@@ -40,7 +43,12 @@ public abstract class Ability {
         locationBonus = cellTypeBonus;
     }
     public final void setRacialBonus(final float characterTypeBonus) {
-        racialBonus = characterTypeBonus + strategyFactor;
+        racialBonus = characterTypeBonus;
+        if (racialBonus != ZERO) {
+            racialBonus += angelFactor;
+        }
+        racialBonus += strategyFactor;
+
     }
     public final float getLocationBonus() {
         return locationBonus;

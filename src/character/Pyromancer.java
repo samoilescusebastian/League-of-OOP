@@ -8,10 +8,23 @@ import ability.Drain;
 import ability.Deflect;
 import ability.Slam;
 import ability.Fireblast;
+import angel.XPAngel;
+import angel.DarkAngel;
+import angel.DamageAngel;
+import angel.Dracula;
+import angel.GoodBoy;
+import angel.LevelUpAngel;
+import angel.LifeGiver;
+import angel.SmallAngel;
+import angel.Spawner;
+import angel.TheDoomer;
+import game.Observer;
 import location.Point;
 import location.Volcanic;
 import strategy.DamageStrategy;
 import strategy.HpStrategy;
+
+import java.io.IOException;
 
 import static utils.Constants.*;
 
@@ -62,4 +75,57 @@ public final class Pyromancer extends Character {
         super.getBestStrategy(PYRO_INF_HP, PYRO_SUP_HP, PYRO_HP_STRIP, PYRO_ABILITIES_STRIP,
                 PYRO_HP_SUPPLY, PYRO_ABILITIES_SUPPLY);
     }
+    public void acceptVisit(final DamageAngel angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += PYRO_DMG_ANGEL_MODIFIER;
+
+    }
+    public void acceptVisit(final DarkAngel angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += PYRO_DARK_ANGEL_MODIFIER;
+    }
+    public void acceptVisit(final Dracula angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += PYRO_DMG_DRACULA_MODIFIER;
+        addHp(PYRO_HP_DRACULA_MODIFIER);
+    }
+    public void acceptVisit(final GoodBoy angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += PYRO_DMG_GOODBOY_MODIFIER;
+        addHp(PYRO_HP_GOODBOY_MODIFIER);
+    }
+    public void acceptVisit(final LevelUpAngel angel) throws IOException {
+        angel.setHelpState(this);
+        int experience = computeNeededHP();
+        addExperience(experience);
+        updateLevel();
+        angelFactor += PYRO_DMG_LU_ANGEL_MODIFIER;
+    }
+    public void acceptVisit(final LifeGiver angel) throws IOException {
+        angel.setHelpState(this);
+        addHp(PYRO_LIFE_GIVER_ANGEL_MODIFIER);
+    }
+    public void acceptVisit(final SmallAngel angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += PYRO_DMG_S_ANGEL_MODIFIER;
+        addHp(PYRO_HP_S_ANGEL_MODIFIER);
+    }
+    public void acceptVisit(final Spawner angel) throws IOException {
+        if (!alive) {
+            angel.setHelpState(this);
+            setRespawnState();
+            alive = true;
+            currentHp = PYRO_HP_SPAWNER_MODIFIER;
+        }
+    }
+    public void acceptVisit(final TheDoomer angel) throws IOException {
+        angel.setHelpState(this);
+        markAsDead();
+    }
+    public void acceptVisit(final XPAngel angel) throws IOException {
+        angel.setHelpState(this);
+        addExperience(PYRO_XP_ANGEL_MODIFIER);
+        updateLevel();
+    }
+
 }

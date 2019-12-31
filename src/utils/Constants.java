@@ -137,6 +137,70 @@ public final class Constants {
     public static final float WIZARD_ABILITIES_SUPPLY = 0.6f;
     public static final float WIZARD_ABILITIES_STRIP = -0.2f;
 
+    public static final float KNIGHT_DMG_ANGEL_MODIFIER = 0.15f;
+    public static final float PYRO_DMG_ANGEL_MODIFIER = 0.2f;
+    public static final float ROGUE_DMG_ANGEL_MODIFIER = 0.3f;
+    public static final float WIZARD_DMG_ANGEL_MODIFIER = 0.4f;
+
+    public static final int KNIGHT_DARK_ANGEL_MODIFIER = -40;
+    public static final int PYRO_DARK_ANGEL_MODIFIER = -30;
+    public static final int ROGUE_DARK_ANGEL_MODIFIER = -10;
+    public static final int WIZARD_DARK_ANGEL_MODIFIER = -20;
+
+    public static final float KNIGHT_DMG_DRACULA_MODIFIER = -0.2f;
+    public static final float PYRO_DMG_DRACULA_MODIFIER = -0.3f;
+    public static final float ROGUE_DMG_DRACULA_MODIFIER = -0.1f;
+    public static final float WIZARD_DMG_DRACULA_MODIFIER = -0.4f;
+
+    public static final int KNIGHT_HP_DRACULA_MODIFIER = -60;
+    public static final int PYRO_HP_DRACULA_MODIFIER = -40;
+    public static final int ROGUE_HP_DRACULA_MODIFIER = -35;
+    public static final int WIZARD_HP_DRACULA_MODIFIER = -20;
+
+    public static final float KNIGHT_DMG_GOODBOY_MODIFIER = 0.4f;
+    public static final float PYRO_DMG_GOODBOY_MODIFIER = 0.5f;
+    public static final float ROGUE_DMG_GOODBOY_MODIFIER = 0.4f;
+    public static final float WIZARD_DMG_GOODBOY_MODIFIER = 0.3f;
+
+    public static final int KNIGHT_HP_GOODBOY_MODIFIER = 20;
+    public static final int PYRO_HP_GOODBOY_MODIFIER = 30;
+    public static final int ROGUE_HP_GOODBOY_MODIFIER =  40;
+    public static final int WIZARD_HP_GOODBOY_MODIFIER = 50;
+
+    public static final float KNIGHT_DMG_LU_ANGEL_MODIFIER = 0.1f;
+    public static final float PYRO_DMG_LU_ANGEL_MODIFIER = 0.2f;
+    public static final float ROGUE_DMG_LU_ANGEL_MODIFIER = 0.15f;
+    public static final float WIZARD_DMG_LU_ANGEL_MODIFIER = 0.25f;
+
+    public static final int KNIGHT_LIFE_GIVER_ANGEL_MODIFIER = 100;
+    public static final int PYRO_LIFE_GIVER_ANGEL_MODIFIER = 80;
+    public static final int ROGUE_LIFE_GIVER_ANGEL_MODIFIER = 90;
+    public static final int WIZARD_LIFE_GIVER_ANGEL_MODIFIER = 120;
+
+    public static final float KNIGHT_DMG_S_ANGEL_MODIFIER = 0.1f;
+    public static final float PYRO_DMG_S_ANGEL_MODIFIER = 0.15f;
+    public static final float ROGUE_DMG_S_ANGEL_MODIFIER = 0.05f;
+    public static final float WIZARD_DMG_S_ANGEL_MODIFIER = 0.10f;
+
+    public static final int KNIGHT_HP_S_ANGEL_MODIFIER = 10;
+    public static final int PYRO_HP_S_ANGEL_MODIFIER = 15;
+    public static final int ROGUE_HP_S_ANGEL_MODIFIER = 20;
+    public static final int WIZARD_HP_S_ANGEL_MODIFIER = 25;
+
+    public static final int KNIGHT_HP_SPAWNER_MODIFIER = 200;
+    public static final int PYRO_HP_SPAWNER_MODIFIER = 150;
+    public static final int ROGUE_HP_SPAWNER_MODIFIER = 180;
+    public static final int WIZARD_HP_SPAWNER_MODIFIER = 120;
+
+    public static final int KNIGHT_XP_ANGEL_MODIFIER = 45;
+    public static final int PYRO_XP_ANGEL_MODIFIER = 50;
+    public static final int ROGUE_XP_ANGEL_MODIFIER = 40;
+    public static final int WIZARD_XP_ANGEL_MODIFIER = 60;
+
+    public static final String HELPED = "helped";
+    public static final String HIT = "hit";
+
+
     public static final Point UP = new Point(-1, 0);
     public static final Point DOWN = new Point(1, 0);
     public static final Point LEFT = new Point(0, -1);

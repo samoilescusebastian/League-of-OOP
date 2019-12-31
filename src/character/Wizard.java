@@ -11,8 +11,20 @@ import ability.Slam;
 import ability.Fireblast;
 import location.Desert;
 import location.Point;
+import angel.XPAngel;
+import angel.DarkAngel;
+import angel.DamageAngel;
+import angel.Dracula;
+import angel.GoodBoy;
+import angel.LevelUpAngel;
+import angel.LifeGiver;
+import angel.SmallAngel;
+import angel.Spawner;
+import angel.TheDoomer;
 import strategy.DamageStrategy;
 import strategy.HpStrategy;
+
+import java.io.IOException;
 
 import static utils.Constants.*;
 
@@ -58,5 +70,57 @@ public final class Wizard extends Character {
     public final void chooseStrategy() {
         super.getBestStrategy(WIZARD_INF_HP, WIZARD_SUP_HP, WIZARD_HP_STRIP, WIZARD_ABILITIES_STRIP,
                 WIZARD_HP_SUPPLY, WIZARD_ABILITIES_SUPPLY);
+    }
+    public void acceptVisit(final DamageAngel angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += WIZARD_DMG_ANGEL_MODIFIER;
+
+    }
+    public void acceptVisit(final DarkAngel angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += WIZARD_DARK_ANGEL_MODIFIER;
+    }
+    public void acceptVisit(final Dracula angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += WIZARD_DMG_DRACULA_MODIFIER;
+        addHp(WIZARD_HP_DRACULA_MODIFIER);
+    }
+    public void acceptVisit(final GoodBoy angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += WIZARD_DMG_GOODBOY_MODIFIER;
+        addHp(WIZARD_HP_GOODBOY_MODIFIER);
+    }
+    public void acceptVisit(final LevelUpAngel angel) throws IOException {
+        angel.setHelpState(this);
+        int experience = computeNeededHP();
+        addExperience(experience);
+        updateLevel();
+        angelFactor += WIZARD_DMG_LU_ANGEL_MODIFIER;
+    }
+    public void acceptVisit(final LifeGiver angel) throws IOException {
+        angel.setHelpState(this);
+        addHp(WIZARD_LIFE_GIVER_ANGEL_MODIFIER);
+    }
+    public void acceptVisit(final SmallAngel angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += WIZARD_DMG_S_ANGEL_MODIFIER;
+        addHp(WIZARD_HP_S_ANGEL_MODIFIER);
+    }
+    public void acceptVisit(final Spawner angel) throws IOException {
+        if (!alive) {
+            angel.setHelpState(this);
+            setRespawnState();
+            alive = true;
+            currentHp = WIZARD_HP_SPAWNER_MODIFIER;
+        }
+    }
+    public void acceptVisit(final TheDoomer angel) throws IOException {
+        angel.setHelpState(this);
+        markAsDead();
+    }
+    public void acceptVisit(final XPAngel angel) throws IOException {
+        angel.setHelpState(this);
+        addExperience(WIZARD_XP_ANGEL_MODIFIER);
+        updateLevel();
     }
 }

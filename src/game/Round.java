@@ -1,14 +1,13 @@
 package game;
 
-import javafx.util.Pair;
-import location.Point;
+import angel.Angel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Round {
     private String moves;
-    private List<Pair<String, Point>> angels;
+    private List<Angel> angels;
 
     public Round() {
         angels = new ArrayList<>();
@@ -22,14 +21,11 @@ public class Round {
         this.moves = moves;
     }
 
-    public List<Pair<String, Point>> getAngels() {
+    public List<Angel> getAngels() {
         return angels;
     }
 
-    public void setAngels(List<Pair<String, Point>> angels) {
-        this.angels = angels;
-    }
-    public void addAngel(Pair<String, Point> angel) {
+    public void addAngel(Angel angel) {
         angels.add(angel);
     }
 }

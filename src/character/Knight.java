@@ -9,10 +9,13 @@ import ability.Drain;
 import ability.Deflect;
 import ability.Slam;
 import ability.Fireblast;
+import angel.*;
 import location.Land;
 import location.Point;
 import strategy.DamageStrategy;
 import strategy.HpStrategy;
+
+import java.io.IOException;
 
 import static utils.Constants.*;
 
@@ -56,6 +59,58 @@ public final class Knight extends Character {
     public void acceptAbility(final Ignite ability) {
         ability.setRacialBonus(IG_KNIGHT_BONUS);
         super.acceptAbility(ability);
+    }
+    public void acceptVisit(final DamageAngel angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += KNIGHT_DMG_ANGEL_MODIFIER;
+
+    }
+    public void acceptVisit(final DarkAngel angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += KNIGHT_DARK_ANGEL_MODIFIER;
+    }
+    public void acceptVisit(final Dracula angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += KNIGHT_DMG_DRACULA_MODIFIER;
+        addHp(KNIGHT_HP_DRACULA_MODIFIER);
+    }
+    public void acceptVisit(final GoodBoy angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += KNIGHT_DMG_GOODBOY_MODIFIER;
+        addHp(KNIGHT_HP_GOODBOY_MODIFIER);
+    }
+    public void acceptVisit(final LevelUpAngel angel) throws IOException {
+        angel.setHelpState(this);
+        int experience = computeNeededHP();
+        addExperience(experience);
+        updateLevel();
+        angelFactor += KNIGHT_DMG_LU_ANGEL_MODIFIER;
+    }
+    public void acceptVisit(final LifeGiver angel) throws IOException {
+        angel.setHelpState(this);
+        addHp(KNIGHT_LIFE_GIVER_ANGEL_MODIFIER);
+    }
+    public void acceptVisit(final SmallAngel angel) throws IOException {
+        angel.setHelpState(this);
+        angelFactor += KNIGHT_DMG_S_ANGEL_MODIFIER;
+        addHp(KNIGHT_HP_S_ANGEL_MODIFIER);
+    }
+    public void acceptVisit(final Spawner angel) throws IOException {
+        if (!alive) {
+            angel.setHelpState(this);
+            setRespawnState();
+            alive = true;
+            currentHp = KNIGHT_HP_SPAWNER_MODIFIER;
+        }
+    }
+    public void acceptVisit(final TheDoomer angel) throws IOException {
+        angel.setHelpState(this);
+        markAsDead();
+    }
+    public void acceptVisit(final XPAngel angel) throws IOException {
+        angel.setHelpState(this);
+        addExperience(KNIGHT_XP_ANGEL_MODIFIER);
+        updateLevel();
     }
     public final void chooseStrategy() {
        super.getBestStrategy(KNIGHT_INF_HP, KNIGHT_SUP_HP, KNIGHT_HP_STRIP, KNIGHT_ABILITIES_STRIP,

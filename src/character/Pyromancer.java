@@ -18,15 +18,40 @@ import angel.LifeGiver;
 import angel.SmallAngel;
 import angel.Spawner;
 import angel.TheDoomer;
-import game.Observer;
 import location.Point;
 import location.Volcanic;
-import strategy.DamageStrategy;
-import strategy.HpStrategy;
 
 import java.io.IOException;
 
-import static utils.Constants.*;
+import static utils.Constants.PYRO_INIT_HP;
+import static utils.Constants.PYRO_HP_PER_LVL;
+import static utils.Constants.VOLCANIC_BONUS;
+import static utils.Constants.BS_PYRO_BONUS;
+import static utils.Constants.PL_PYRO_BONUS;
+import static utils.Constants.DF_PYRO_BONUS;
+import static utils.Constants.DR_PYRO_BONUS;
+import static utils.Constants.EX_PYRO_BONUS;
+import static utils.Constants.SL_PYRO_BONUS;
+import static utils.Constants.FB_PYRO_BONUS;
+import static utils.Constants.IG_PYRO_BONUS;
+import static utils.Constants.PYRO_DMG_ANGEL_MODIFIER;
+import static utils.Constants.PYRO_DARK_ANGEL_MODIFIER;
+import static utils.Constants.PYRO_HP_DRACULA_MODIFIER;
+import static utils.Constants.PYRO_DMG_LU_ANGEL_MODIFIER;
+import static utils.Constants.PYRO_HP_S_ANGEL_MODIFIER;
+import static utils.Constants.PYRO_DMG_GOODBOY_MODIFIER;
+import static utils.Constants.PYRO_LIFE_GIVER_ANGEL_MODIFIER;
+import static utils.Constants.PYRO_DMG_S_ANGEL_MODIFIER;
+import static utils.Constants.PYRO_HP_SPAWNER_MODIFIER;
+import static utils.Constants.PYRO_DMG_DRACULA_MODIFIER;
+import static utils.Constants.PYRO_ABILITIES_SUPPLY;
+import static utils.Constants.PYRO_ABILITIES_STRIP;
+import static utils.Constants.PYRO_HP_GOODBOY_MODIFIER;
+import static utils.Constants.PYRO_XP_ANGEL_MODIFIER;
+import static utils.Constants.PYRO_HP_STRIP;
+import static utils.Constants.PYRO_INF_HP;
+import static utils.Constants.PYRO_SUP_HP;
+import static utils.Constants.PYRO_HP_SUPPLY;
 
 public final class Pyromancer extends Character {
 
@@ -71,7 +96,7 @@ public final class Pyromancer extends Character {
         ability.setRacialBonus(IG_PYRO_BONUS);
         super.acceptAbility(ability);
     }
-    public final void chooseStrategy() {
+    public void chooseStrategy() {
         super.getBestStrategy(PYRO_INF_HP, PYRO_SUP_HP, PYRO_HP_STRIP, PYRO_ABILITIES_STRIP,
                 PYRO_HP_SUPPLY, PYRO_ABILITIES_SUPPLY);
     }
@@ -82,7 +107,7 @@ public final class Pyromancer extends Character {
     }
     public void acceptVisit(final DarkAngel angel) throws IOException {
         angel.setHelpState(this);
-        angelFactor += PYRO_DARK_ANGEL_MODIFIER;
+        addHp(PYRO_DARK_ANGEL_MODIFIER);
     }
     public void acceptVisit(final Dracula angel) throws IOException {
         angel.setHelpState(this);
@@ -115,6 +140,7 @@ public final class Pyromancer extends Character {
             angel.setHelpState(this);
             setRespawnState();
             alive = true;
+            angelFactor = 0;
             currentHp = PYRO_HP_SPAWNER_MODIFIER;
         }
     }

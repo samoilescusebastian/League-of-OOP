@@ -70,7 +70,9 @@ public final class  GameInputLoader {
                     angelType = angelInfo.substring(0, angelTypeEnd);
                     coordinates = angelInfo.substring(angelTypeEnd + 1);
                     coordSeparator = coordinates.indexOf(',');
-                    angelLocation = new Point(Integer.parseInt(coordinates.substring(0, coordSeparator)), Integer.parseInt(coordinates.substring(coordSeparator + 1)));
+                    angelLocation = new Point(Integer.parseInt(coordinates.
+                            substring(0, coordSeparator)), Integer.parseInt(coordinates.
+                            substring(coordSeparator + 1)));
                     Angel angel = angelFactory.createAngel(angelType, angelLocation);
                     rounds.get(i).addAngel(angel);
                 }

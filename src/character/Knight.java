@@ -9,15 +9,48 @@ import ability.Drain;
 import ability.Deflect;
 import ability.Slam;
 import ability.Fireblast;
-import angel.*;
+import angel.TheDoomer;
+import angel.Dracula;
+import angel.DarkAngel;
+import angel.DamageAngel;
+import angel.GoodBoy;
+import angel.Spawner;
+import angel.LifeGiver;
+import angel.LevelUpAngel;
+import angel.SmallAngel;
+import angel.XPAngel;
 import location.Land;
 import location.Point;
-import strategy.DamageStrategy;
-import strategy.HpStrategy;
-
 import java.io.IOException;
-
-import static utils.Constants.*;
+import static utils.Constants.KG_HP_PER_LVL;
+import static utils.Constants.KG_INIT_HP;
+import static utils.Constants.LAND_BONUS;
+import static utils.Constants.BS_KNIGHT_BONUS;
+import static utils.Constants.PL_KNIGHT_BONUS;
+import static utils.Constants.DF_KNIGHT_BONUS;
+import static utils.Constants.DR_KNIGHT_BONUS;
+import static utils.Constants.EX_KNIGHT_BONUS;
+import static utils.Constants.SL_KNIGHT_BONUS;
+import static utils.Constants.FB_KNIGHT_BONUS;
+import static utils.Constants.IG_KNIGHT_BONUS;
+import static utils.Constants.KNIGHT_DMG_ANGEL_MODIFIER;
+import static utils.Constants.KNIGHT_DARK_ANGEL_MODIFIER;
+import static utils.Constants.KNIGHT_HP_DRACULA_MODIFIER;
+import static utils.Constants.KNIGHT_DMG_LU_ANGEL_MODIFIER;
+import static utils.Constants.KNIGHT_HP_S_ANGEL_MODIFIER;
+import static utils.Constants.KNIGHT_DMG_GOODBOY_MODIFIER;
+import static utils.Constants.KNIGHT_LIFE_GIVER_ANGEL_MODIFIER;
+import static utils.Constants.KNIGHT_DMG_S_ANGEL_MODIFIER;
+import static utils.Constants.KNIGHT_HP_SPAWNER_MODIFIER;
+import static utils.Constants.KNIGHT_DMG_DRACULA_MODIFIER;
+import static utils.Constants.KNIGHT_ABILITIES_SUPPLY;
+import static utils.Constants.KNIGHT_ABILITIES_STRIP;
+import static utils.Constants.KNIGHT_HP_GOODBOY_MODIFIER;
+import static utils.Constants.KNIGHT_XP_ANGEL_MODIFIER;
+import static utils.Constants.KNIGHT_HP_STRIP;
+import static utils.Constants.KNIGHT_INF_HP;
+import static utils.Constants.KNIGHT_SUP_HP;
+import static utils.Constants.KNIGHT_HP_SUPPLY;
 
 public final class Knight extends Character {
     public Knight(final Point location) {
@@ -67,7 +100,7 @@ public final class Knight extends Character {
     }
     public void acceptVisit(final DarkAngel angel) throws IOException {
         angel.setHelpState(this);
-        angelFactor += KNIGHT_DARK_ANGEL_MODIFIER;
+        addHp(KNIGHT_DARK_ANGEL_MODIFIER);
     }
     public void acceptVisit(final Dracula angel) throws IOException {
         angel.setHelpState(this);
@@ -100,6 +133,7 @@ public final class Knight extends Character {
             angel.setHelpState(this);
             setRespawnState();
             alive = true;
+            angelFactor = 0;
             currentHp = KNIGHT_HP_SPAWNER_MODIFIER;
         }
     }
@@ -112,7 +146,7 @@ public final class Knight extends Character {
         addExperience(KNIGHT_XP_ANGEL_MODIFIER);
         updateLevel();
     }
-    public final void chooseStrategy() {
+    public void chooseStrategy() {
        super.getBestStrategy(KNIGHT_INF_HP, KNIGHT_SUP_HP, KNIGHT_HP_STRIP, KNIGHT_ABILITIES_STRIP,
                             KNIGHT_HP_SUPPLY, KNIGHT_ABILITIES_SUPPLY);
     }

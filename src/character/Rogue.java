@@ -24,7 +24,35 @@ import angel.TheDoomer;
 
 import java.io.IOException;
 
-import static utils.Constants.*;
+import static utils.Constants.ROG_INIT_HP;
+import static utils.Constants.ROG_HP_PER_LVL;
+import static utils.Constants.WOODS_BONUS;
+import static utils.Constants.BS_ROGUE_BONUS;
+import static utils.Constants.PL_ROGUE_BONUS;
+import static utils.Constants.DF_ROGUE_BONUS;
+import static utils.Constants.DR_ROGUE_BONUS;
+import static utils.Constants.EX_ROGUE_BONUS;
+import static utils.Constants.SL_ROGUE_BONUS;
+import static utils.Constants.FB_ROGUE_BONUS;
+import static utils.Constants.IG_ROGUE_BONUS;
+import static utils.Constants.ROGUE_DMG_ANGEL_MODIFIER;
+import static utils.Constants.ROGUE_DARK_ANGEL_MODIFIER;
+import static utils.Constants.ROGUE_HP_DRACULA_MODIFIER;
+import static utils.Constants.ROGUE_DMG_LU_ANGEL_MODIFIER;
+import static utils.Constants.ROGUE_HP_S_ANGEL_MODIFIER;
+import static utils.Constants.ROGUE_DMG_GOODBOY_MODIFIER;
+import static utils.Constants.ROGUE_LIFE_GIVER_ANGEL_MODIFIER;
+import static utils.Constants.ROGUE_DMG_S_ANGEL_MODIFIER;
+import static utils.Constants.ROGUE_HP_SPAWNER_MODIFIER;
+import static utils.Constants.ROGUE_DMG_DRACULA_MODIFIER;
+import static utils.Constants.ROGUE_ABILITIES_SUPPLY;
+import static utils.Constants.ROGUE_ABILITIES_STRIP;
+import static utils.Constants.ROGUE_HP_GOODBOY_MODIFIER;
+import static utils.Constants.ROGUE_XP_ANGEL_MODIFIER;
+import static utils.Constants.ROGUE_HP_STRIP;
+import static utils.Constants.ROGUE_INF_HP;
+import static utils.Constants.ROGUE_SUP_HP;
+import static utils.Constants.ROGUE_HP_SUPPLY;
 
 public final class Rogue extends Character {
     public Rogue(final Point location) {
@@ -69,7 +97,7 @@ public final class Rogue extends Character {
         ability.setRacialBonus(IG_ROGUE_BONUS);
         super.acceptAbility(ability);
     }
-    public final void chooseStrategy() {
+    public void chooseStrategy() {
         super.getBestStrategy(ROGUE_INF_HP, ROGUE_SUP_HP, ROGUE_HP_STRIP, ROGUE_ABILITIES_STRIP,
                 ROGUE_HP_SUPPLY, ROGUE_ABILITIES_SUPPLY);
     }
@@ -81,7 +109,7 @@ public final class Rogue extends Character {
     }
     public void acceptVisit(final DarkAngel angel) throws IOException {
         angel.setHelpState(this);
-        angelFactor += ROGUE_DARK_ANGEL_MODIFIER;
+        addHp(ROGUE_DARK_ANGEL_MODIFIER);
     }
     public void acceptVisit(final Dracula angel) throws IOException {
         angel.setHelpState(this);
@@ -114,6 +142,7 @@ public final class Rogue extends Character {
             angel.setHelpState(this);
             setRespawnState();
             alive = true;
+            angelFactor = 0;
             currentHp = ROGUE_HP_SPAWNER_MODIFIER;
         }
     }

@@ -11,7 +11,16 @@ import ability.Drain;
 import ability.Deflect;
 import ability.Slam;
 import ability.Fireblast;
-import angel.*;
+import angel.XPAngel;
+import angel.DarkAngel;
+import angel.DamageAngel;
+import angel.Dracula;
+import angel.GoodBoy;
+import angel.LevelUpAngel;
+import angel.LifeGiver;
+import angel.SmallAngel;
+import angel.Spawner;
+import angel.TheDoomer;
 import game.Observable;
 import game.Observer;
 import location.Land;
@@ -27,7 +36,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static utils.Constants.*;
+import static utils.Constants.ZERO;
+import static utils.Constants.NO_EFFECT;
+import static utils.Constants.NEUTRAL;
+import static utils.Constants.DR_HP_DEP;
+import static utils.Constants.UP;
+import static utils.Constants.DOWN;
+import static utils.Constants.RIGHT;
+import static utils.Constants.LEFT;
+import static utils.Constants.LVL_UP_XP_BASE;
+import static utils.Constants.FULL_PERCENTAGE;
+import static utils.Constants.LVL_UP_AMP;
 
 public abstract class Character implements Observable {
     protected List<Observer> observers;
@@ -42,7 +61,7 @@ public abstract class Character implements Observable {
     protected int xp;
     protected int currentHp;
     protected int hpPerLevel;
-    protected int lvl;
+    protected int level;
     protected int paralysisLife;
     protected boolean alive;
     protected int takenDamage;
@@ -60,7 +79,7 @@ public abstract class Character implements Observable {
         dotDamage = ZERO;
         dotLife = ZERO;
         xp = ZERO;
-        lvl = ZERO;
+        level = ZERO;
         paralysisLife = NO_EFFECT;
         alive = true;
         baseHp = currentHp;
@@ -187,18 +206,21 @@ public abstract class Character implements Observable {
         }
 
     }
-    public abstract void acceptVisit(final DamageAngel angel) throws IOException;
-    public abstract void acceptVisit(final DarkAngel angel) throws IOException;
-    public abstract void acceptVisit(final Dracula angel) throws IOException;
-    public abstract void acceptVisit(final GoodBoy angel) throws IOException;
-    public abstract void acceptVisit(final LevelUpAngel angel) throws IOException;
-    public abstract void acceptVisit(final LifeGiver angel) throws IOException;
-    public abstract void acceptVisit(final SmallAngel angel) throws IOException;
-    public abstract void acceptVisit(final Spawner angel) throws IOException;
-    public abstract void acceptVisit(final TheDoomer angel) throws IOException;
-    public abstract void acceptVisit(final XPAngel angel) throws IOException;
+    public abstract void acceptVisit(DamageAngel angel) throws IOException;
+    public abstract void acceptVisit(DarkAngel angel) throws IOException;
+    public abstract void acceptVisit(Dracula angel) throws IOException;
+    public abstract void acceptVisit(GoodBoy angel) throws IOException;
+    public abstract void acceptVisit(LevelUpAngel angel) throws IOException;
+    public abstract void acceptVisit(LifeGiver angel) throws IOException;
+    public abstract void acceptVisit(SmallAngel angel) throws IOException;
+    public abstract void acceptVisit(Spawner angel) throws IOException;
+    public abstract void acceptVisit(TheDoomer angel) throws IOException;
+    public abstract void acceptVisit(XPAngel angel) throws IOException;
 
-    public void setAbilitiesModifier(float abilityModifier) {
+    /**
+     * add strategy modifier to base modifiers.
+     */
+    public void setAbilitiesModifier(final float abilityModifier) {
         baseAbility.setStrategyFactor(abilityModifier);
         specialAbility.setStrategyFactor(abilityModifier);
 
@@ -240,9 +262,9 @@ public abstract class Character implements Observable {
     public final void attack(final Character victim) throws IOException {
         Ability customizedBaseAbility = this.getBaseAbility();
         Ability customizedSpecialAbility = this.getSpecialAbility();
-        customizedBaseAbility.computeLvlDamage(lvl, takenDamage);
+        customizedBaseAbility.computeLvlDamage(level, takenDamage);
         customizedBaseAbility.setAngelFactor(angelFactor);
-        customizedSpecialAbility.computeLvlDamage(lvl, takenDamage);
+        customizedSpecialAbility.computeLvlDamage(level, takenDamage);
         customizedSpecialAbility.setAngelFactor(angelFactor);
         customizedBaseAbility.strike(victim);
         customizedSpecialAbility.strike(victim);
@@ -283,7 +305,7 @@ public abstract class Character implements Observable {
         return currentHp;
     }
     public final void modifyHp(final int factor) {
-        currentHp += Math.round(currentHp / factor);
+        currentHp += (currentHp / factor);
         if (currentHp > maxHp) {
             currentHp = maxHp;
         }
@@ -297,14 +319,14 @@ public abstract class Character implements Observable {
     public final float getHPPercentage() {
         return (currentHp * FULL_PERCENTAGE) / maxHp;
     }
-    public final int getLvl() {
-        return lvl;
+    public final int getLevel() {
+        return level;
     }
     public final boolean isDead() {
         return !alive;
     }
     public final boolean isParalysed() {
-        return paralysisLife >= 0;
+        return paralysisLife > NO_EFFECT;
     }
     public final boolean takeDoT() {
         if (dotLife > ZERO) {
@@ -318,34 +340,41 @@ public abstract class Character implements Observable {
 //        cell.deleteCharacter(id);
         alive = false;
         currentHp = ZERO;
-        dotDamage = ZERO;
-        dotLife = ZERO;
-        paralysisLife = ZERO;
+//        dotDamage = ZERO;
+//        dotLife = ZERO;
+//        paralysisLife = ZERO;
     }
     public final void updateLevel() throws IOException {
         if (xp >= LVL_UP_XP_BASE) {
             final int newLVL = ((xp - LVL_UP_XP_BASE) / LVL_UP_AMP) + 1;
-            if (newLVL > lvl) {
+            if (newLVL > level) {
                 currentHp = baseHp + hpPerLevel * newLVL;
                 maxHp = baseHp + hpPerLevel * newLVL;
-                lvl = newLVL;
-                setLevelUpState();
+                setLevelUpState(newLVL);
+                level = newLVL;
             }
         }
     }
     public final int computeNeededHP() {
-        return LVL_UP_XP_BASE + lvl * LVL_UP_AMP - xp;
+        return LVL_UP_XP_BASE + level * LVL_UP_AMP - xp;
     }
     public final void addExperience(final int experience) {
         xp += experience;
     }
     public abstract void chooseStrategy();
-    protected void getBestStrategy(int infHp, int supHp, int hpStrip, float abilitiesStrip,
-                               int hpSupply, float abilitiesSupply) {
+
+    /**
+     * change strategy based on hp percentage.
+     */
+    protected void getBestStrategy(final int infHp, final int supHp, final int hpStrip,
+                                   final float abilitiesStrip, final int hpSupply,
+                                   final float abilitiesSupply) {
         if (maxHp / infHp < currentHp && currentHp < maxHp / supHp) {
             strategy = new DamageStrategy(this, hpStrip, abilitiesSupply);
-        } else if (currentHp < maxHp / infHp){
+        } else if (currentHp < maxHp / infHp) {
             strategy = new HpStrategy(this, hpSupply, abilitiesStrip);
+        } else {
+            strategy = null;
         }
     }
     public final void applyStrategy() {
@@ -353,48 +382,59 @@ public abstract class Character implements Observable {
             strategy.applyStrategy();
         }
     }
+    /**
+     * add a new observer.
+     */
     @Override
-    public void registerObserver(Observer observer) {
+    public void registerObserver(final Observer observer) {
         observers.add(observer);
     }
-
+    /**
+     * remove an observer.
+     */
     @Override
-    public void removeObserver(Observer observer) {
+    public void removeObserver(final Observer observer) {
         observers.remove(observer);
     }
-
+    /**
+     * notify all observers when state of observable object is changed.
+     */
     public void notifyObservers() throws IOException {
         for (Observer observer : observers) {
             observer.update(fs, state);
         }
     }
-    public void setRespawnState() throws IOException {
-        state = "Player " + CharacterType.convertCharToType(type) + " " + id + " was brought to life by an angel";
+    public final void setRespawnState() throws IOException {
+        state = "Player " + CharacterType.convertCharToType(type) + " " + id
+                          + " was brought to life by an angel";
         notifyObservers();
     }
-    public void setKilledInFightState(Character player) throws IOException {
+    public final void setKilledInFightState(final Character player) throws IOException {
         state = "Player " + CharacterType.convertCharToType(type) + " " + id + " was killed by "
-                          + CharacterType.convertCharToType(player.getType()) + " " + player.getId();
+                          + CharacterType.convertCharToType(player.getType()) + " "
+                          + player.getId();
         notifyObservers();
 
     }
-    public void setLevelUpState() throws IOException {
-        state = CharacterType.convertCharToType(type) + " " + id + " reached level" + lvl;
-        notifyObservers();
+    public final void setLevelUpState(final int newLevel) throws IOException {
+        for (int lvl = level + 1; lvl <= newLevel; lvl++) {
+            state = CharacterType.convertCharToType(type) + " " + id + " reached level " + lvl;
+            notifyObservers();
+        }
     }
-    public void setKilledByAngelState() throws IOException {
-        state = "Player " + CharacterType.convertCharToType(type) + " " + id + " was killed by an angel";
+    public final void setKilledByAngelState() throws IOException {
+        state = "Player " + CharacterType.convertCharToType(type) + " " + id
+                          + " was killed by an angel";
         notifyObservers();
     }
     @Override
     public final String toString() {
         if (alive) {
-            return type + " " + lvl + " " + xp + " " + currentHp + " " + location;
+            return type + " " + level + " " + xp + " " + currentHp + " " + location;
         }
         return type + " dead";
     }
     public static void setFileSystem(final fileio.FileSystem fileSystem) {
         fs = fileSystem;
     }
-
 }

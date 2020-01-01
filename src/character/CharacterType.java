@@ -17,6 +17,9 @@ public enum CharacterType {
             case 'W':
                 type = CharacterType.Wizard;
                 break;
+            default:
+                type = null;
+                break;
         }
         return type;
     }

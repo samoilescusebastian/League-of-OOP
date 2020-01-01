@@ -1,7 +1,7 @@
 package strategy;
 import character.Character;
 
-public class HpStrategy implements StrategyBehaviour {
+public final class HpStrategy implements StrategyBehaviour {
     private Character player;
     private int hpFactor;
     private float abilityFactor;
@@ -12,7 +12,6 @@ public class HpStrategy implements StrategyBehaviour {
     }
     @Override
     public void applyStrategy() {
-        System.out.println(player.getType() + String.valueOf(player.getId()) +" applied HP Strategy");
         player.modifyHp(hpFactor);
         player.setAbilitiesModifier(abilityFactor);
 

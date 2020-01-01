@@ -1,7 +1,7 @@
 package strategy;
 import character.Character;
 
-public class DamageStrategy implements StrategyBehaviour {
+public final class DamageStrategy implements StrategyBehaviour {
     private Character player;
     private int hpFactor;
     private float abilityFactor;
@@ -12,7 +12,6 @@ public class DamageStrategy implements StrategyBehaviour {
     }
     @Override
     public void applyStrategy() {
-        System.out.println(player.getType() + String.valueOf(player.getId()) + " applied Damage Strategy");
         player.modifyHp(hpFactor);
         player.setAbilitiesModifier(abilityFactor);
 

@@ -6,7 +6,6 @@ public final class Constants {
     private Constants() {
     }
     public static final int ZERO = 0;
-
     public static final int FB_DAMAGE = 350;
     public static final int FB_DMG_PER_LVL = 50;
 
@@ -63,7 +62,7 @@ public final class Constants {
     public static final int XP_AMP = 40;
     public static final int LVL_UP_XP_BASE = 250;
     public static final int LVL_UP_AMP = 50;
-    public static final int THREE = 3;
+    public static final int PL_OVERTIME = 3;
     public static final float AMPLIFIER = 1.5f;
     public static final float DR_HP_DEP = 0.3f;
     public static final int OVERTIME_BONUS = 3;
@@ -169,7 +168,7 @@ public final class Constants {
 
     public static final float KNIGHT_DMG_LU_ANGEL_MODIFIER = 0.1f;
     public static final float PYRO_DMG_LU_ANGEL_MODIFIER = 0.2f;
-    public static final float ROGUE_DMG_LU_ANGEL_MODIFIER = 0.15f;
+    public static final float ROGUE_DMG_LU_ANGEL_MODIFIER = 0.1499999f;
     public static final float WIZARD_DMG_LU_ANGEL_MODIFIER = 0.25f;
 
     public static final int KNIGHT_LIFE_GIVER_ANGEL_MODIFIER = 100;
@@ -205,6 +204,7 @@ public final class Constants {
     public static final Point DOWN = new Point(1, 0);
     public static final Point LEFT = new Point(0, -1);
     public static final Point RIGHT = new Point(0, 1);
+
 
 
 }

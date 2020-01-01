@@ -21,12 +21,36 @@ import angel.LifeGiver;
 import angel.SmallAngel;
 import angel.Spawner;
 import angel.TheDoomer;
-import strategy.DamageStrategy;
-import strategy.HpStrategy;
-
 import java.io.IOException;
 
-import static utils.Constants.*;
+import static utils.Constants.WIZ_INIT_HP;
+import static utils.Constants.WIZ_HP_PER_LVL;
+import static utils.Constants.DESERT_BONUS;
+import static utils.Constants.BS_WIZARD_BONUS;
+import static utils.Constants.PL_WIZARD_BONUS;
+import static utils.Constants.DR_WIZARD_BONUS;
+import static utils.Constants.EX_WIZARD_BONUS;
+import static utils.Constants.SL_WIZARD_BONUS;
+import static utils.Constants.FB_WIZARD_BONUS;
+import static utils.Constants.IG_WIZARD_BONUS;
+import static utils.Constants.WIZARD_DMG_ANGEL_MODIFIER;
+import static utils.Constants.WIZARD_DARK_ANGEL_MODIFIER;
+import static utils.Constants.WIZARD_HP_DRACULA_MODIFIER;
+import static utils.Constants.WIZARD_DMG_LU_ANGEL_MODIFIER;
+import static utils.Constants.WIZARD_HP_S_ANGEL_MODIFIER;
+import static utils.Constants.WIZARD_DMG_GOODBOY_MODIFIER;
+import static utils.Constants.WIZARD_LIFE_GIVER_ANGEL_MODIFIER;
+import static utils.Constants.WIZARD_DMG_S_ANGEL_MODIFIER;
+import static utils.Constants.WIZARD_HP_SPAWNER_MODIFIER;
+import static utils.Constants.WIZARD_DMG_DRACULA_MODIFIER;
+import static utils.Constants.WIZARD_ABILITIES_SUPPLY;
+import static utils.Constants.WIZARD_ABILITIES_STRIP;
+import static utils.Constants.WIZARD_HP_GOODBOY_MODIFIER;
+import static utils.Constants.WIZARD_XP_ANGEL_MODIFIER;
+import static utils.Constants.WIZARD_HP_STRIP;
+import static utils.Constants.WIZARD_INF_HP;
+import static utils.Constants.WIZARD_SUP_HP;
+import static utils.Constants.WIZARD_HP_SUPPLY;
 
 public final class Wizard extends Character {
     public Wizard(final Point location) {
@@ -67,7 +91,7 @@ public final class Wizard extends Character {
         ability.setRacialBonus(IG_WIZARD_BONUS);
         super.acceptAbility(ability);
     }
-    public final void chooseStrategy() {
+    public void chooseStrategy() {
         super.getBestStrategy(WIZARD_INF_HP, WIZARD_SUP_HP, WIZARD_HP_STRIP, WIZARD_ABILITIES_STRIP,
                 WIZARD_HP_SUPPLY, WIZARD_ABILITIES_SUPPLY);
     }
@@ -78,7 +102,7 @@ public final class Wizard extends Character {
     }
     public void acceptVisit(final DarkAngel angel) throws IOException {
         angel.setHelpState(this);
-        angelFactor += WIZARD_DARK_ANGEL_MODIFIER;
+        addHp(WIZARD_DARK_ANGEL_MODIFIER);
     }
     public void acceptVisit(final Dracula angel) throws IOException {
         angel.setHelpState(this);
@@ -111,6 +135,7 @@ public final class Wizard extends Character {
             angel.setHelpState(this);
             setRespawnState();
             alive = true;
+            angelFactor = 0;
             currentHp = WIZARD_HP_SPAWNER_MODIFIER;
         }
     }

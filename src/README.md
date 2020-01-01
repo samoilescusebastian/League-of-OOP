@@ -6,6 +6,8 @@ Copyright Sebastian Samoilescu 2019
 |   Grupa: 325CA                 |
 |--------------------------------|
 
+++++++++++++++ ETAPA I ++++++++++++++++++
+
 EROI
 ---> pentru implementarea eroilor am folosit clasa de baza Character care a fost ulterior
      extinsa de cei 4 eroi
@@ -55,3 +57,37 @@ LOGICA JOCULUI
 
 CITIREA DATELOR
 ---> este realizata cu ajutorul clasei GameInputLoader
+
+
+++++++++++++ Etapa II +++++++++++++++++
+
+INGERI
+
+-----> pentru fiecare tip de inger a fost realizata o clasa ce mosteneste clasa principala "Angel"
+
+-----> am folosit patter - ul visitor intre ingeri si caractere (pentru a acorda bonusurile corespunzatoare)
+
+
+OBSERVER
+
+-----> observer - ul este reprezentat de clasa GreatWizard care implementeaza interfata Observer definita de mine
+       marele magician detine metoda de update, metoda ce printeaza detalii despre o stare furnizata de obiectele
+       observate
+
+-----> obiectele observate sunt atat caracterele jocului cat si ingerii
+
+-----> fiecare obiect observat este caracterizat de o stare si de o functie ce alerteaza observatorul atunci cand
+       starea obiectului se schimba
+
+
+STRATEGII
+
+----> pentru implementarea strategiilor am introdus un camp nou in clasa "character", un obiect de tip "Strategy"
+
+----> exista doua tipuri de strategii (damageStrategy si hpStrategy) ce implementeaza interfata Stratgy.
+				     === damage strategy - renuntare la viata si crestere modificatori dmg
+				     === hp strategy - renuntare la modificatori dmg si crestere viata
+
+RUNDE
+
+----> ingerii, precum si miscarile pentru fiecare runda sunt retinute intr - o noua clasa "Round"

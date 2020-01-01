@@ -3,9 +3,8 @@ package ability;
 
 import character.Character;
 
-import static utils.Constants.FULL_DMG;
 import static utils.Constants.ZERO;
-
+import static utils.Constants.FULL_DMG;
 public abstract class Ability {
     protected float baseDamage;
     protected float bonusBaseDmgPerLvl;
@@ -37,7 +36,7 @@ public abstract class Ability {
         angelFactor = damageFactor;
     }
     public final void setStrategyFactor(final float abilityModifier) {
-        strategyFactor = abilityModifier;
+        strategyFactor += abilityModifier;
     }
     public final void setLocationBonus(final float cellTypeBonus) {
         locationBonus = cellTypeBonus;
@@ -62,9 +61,6 @@ public abstract class Ability {
     }
     public final float getLevelDamage() {
         return levelDmg;
-    }
-    public final float getNoRaceDamage() {
-        return Math.round(levelDmg * (FULL_DMG + locationBonus));
     }
     public final float getEffectiveBaseDmg() {
         return effectiveBaseDmg;

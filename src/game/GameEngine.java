@@ -1,6 +1,7 @@
 package game;
 
 import angel.Angel;
+import angel.AngelType;
 import character.GreatWizard;
 import location.Cell;
 import location.Map;
@@ -17,9 +18,9 @@ import static utils.Constants.XP_AMP;
 import static utils.Constants.XP_REF;
 import static utils.Constants.ONE;
 
-public class GameEngine {
+public final class GameEngine {
     private GameInput gameInput;
-    private  fileio.FileSystem fs;
+    private fileio.FileSystem fs;
     public GameEngine(final GameInput gameInput, final fileio.FileSystem fs) {
         this.gameInput = gameInput;
         this.fs = fs;
@@ -40,9 +41,9 @@ public class GameEngine {
         List<Round> rounds = gameInput.getRounds();
         String moves;
         for (int i = ZERO; i < roundsNumber; i++) {
-            fs.writeWord("~~ Round " + String.valueOf(i + 1) + "~~\n");
+            fs.writeWord("~~ Round " + String.valueOf(i + 1) + " ~~\n");
+            applyRoundEffects(players);
             chooseNextStrategies(players);
-            applyRoundEffects(players, map);
             moves = rounds.get(i).getMoves();
             List<Cell> cellConflicts = new ArrayList<>();
             for (int j = ZERO; j < players.size(); j++) {
@@ -53,13 +54,9 @@ public class GameEngine {
                 map.deletePlayer(currentPlayer);
                 currentPlayer.move(moves.charAt(j));
                 map.addPlayer(currentPlayer);
-                Point newLocation = currentPlayer.getLocation();
-                Cell cell = map.getCell(newLocation.getX(), newLocation.getY());
-                if (cell.isInConflict(currentPlayer, players)) {
-                    cellConflicts.add(cell);
-                }
             }
-            startBattles(cellConflicts, players, map);
+            getCellConflicts(cellConflicts, players,  map);
+            startBattles(cellConflicts, players);
             summonAngels(rounds.get(i).getAngels(), map, players, greatWizard);
             fs.writeWord("\n");
         }
@@ -75,7 +72,7 @@ public class GameEngine {
             fs.writeWord("\n");
         }
  }
- private void applyRoundEffects(final List<Character> players, final Map map) {
+ private void applyRoundEffects(final List<Character> players) {
         for (int i = 0; i < players.size(); i++) {
             Character currentPlayer = players.get(i);
             if (currentPlayer.getParalysisLife() >= 0) {
@@ -86,18 +83,33 @@ public class GameEngine {
             }
         }
  }
- private void chooseNextStrategies(List<Character> players) {
+ private void chooseNextStrategies(final List<Character> players) {
+
      for (Character player : players) {
-         if (player.isParalysed()) {
+         if (player.isParalysed() || player.isDead()) {
              continue;
          }
          player.chooseStrategy();
          player.applyStrategy();
      }
  }
- private void startBattles(final List<Cell> battles, final List<Character> players, final Map map) throws IOException {
+ private void getCellConflicts(final List<Cell> cellList, final List<Character> players,
+                               final Map map) {
+    for (Character player: players) {
+        if (player.isDead()) {
+            continue;
+        }
+        Point playerLocation = player.getLocation();
+        Cell playerCell = map.getCell(playerLocation.getX(), playerLocation.getY());
+        if (playerCell != null && playerCell.isInConflict(players, player)) {
+            cellList.add(playerCell);
+        }
+    }
+ }
+ private void startBattles(final List<Cell> battles,
+                           final List<Character> players) throws IOException {
         for (int i = 0; i < battles.size(); i++) {
-            List<Integer> battlePlayers = battles.get(i).getCharacters();
+            List<Integer> battlePlayers = battles.get(i).getAliveCharacters(players);
             sortPlayers(battlePlayers, players);
             Character firstPlayer = players.get(battlePlayers.get(ZERO));
             Character secondPlayer = players.get(battlePlayers.get(ONE));
@@ -109,14 +121,16 @@ public class GameEngine {
             resetEffects(firstPlayer, secondPlayer);
         }
  }
- private void summonAngels(List<Angel> angels, Map map, List<Character> players, GreatWizard greatWizard) throws IOException {
+ private void summonAngels(final List<Angel> angels, final Map map, final List<Character> players,
+                           final GreatWizard greatWizard) throws IOException {
      for (Angel angel : angels) {
          angel.registerObserver(greatWizard);
          angel.setSummonState();
          Point location = angel.getLocation();
          Cell cell = map.getCell(location.getX(), location.getY());
+         cell.sortPlayers();
          for (Integer id : cell.getCharacters()) {
-             if (!players.get(id).isDead()) {
+             if (!players.get(id).isDead() || angel.getType() == AngelType.Spawner) {
                  angel.visitPlayer(players.get(id));
                  if (players.get(id).getCurrentHp() <= ZERO) {
                      players.get(id).markAsDead();
@@ -126,7 +140,7 @@ public class GameEngine {
          }
      }
  }
- private void addObserverToPlayers(List<Character> players, GreatWizard greatWizard) {
+ private void addObserverToPlayers(final List<Character> players, final GreatWizard greatWizard) {
      for (Character player : players) {
          player.registerObserver(greatWizard);
      }
@@ -153,13 +167,13 @@ public class GameEngine {
         playerA.updateLevel();
         playerB.updateLevel();
  }
- private void addExperience(final Character playerA, final Character playerB){
-     if (playerB.isDead()) {
-         int experience = Math.max(ZERO, XP_REF - (playerA.getLvl() - playerB.getLvl() * XP_AMP));
+ private void addExperience(final Character playerA, final Character playerB) {
+     if (playerB.isDead() && !playerA.isDead()) {
+         int experience = Math.max(0, XP_REF - (playerA.getLevel() - playerB.getLevel()) * XP_AMP);
          playerA.addExperience(experience);
      }
-     if (playerA.isDead()) {
-         int experience = Math.max(ZERO, XP_REF - (playerB.getLvl() - playerA.getLvl() * XP_AMP));
+     if (playerA.isDead() && !playerB.isDead()) {
+         int experience = Math.max(0, XP_REF - (playerB.getLevel() - playerA.getLevel()) * XP_AMP);
          playerB.addExperience(experience);
      }
 

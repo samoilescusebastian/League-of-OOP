@@ -21,14 +21,11 @@ public final class Map {
     public void setCell(final Cell typeCell, final int rowIndex, final int columnIndex) {
         map[rowIndex][columnIndex] = typeCell;
     }
-    public int  getRowsNumber() {
-        return rows;
-    }
-    public int getColumnsNumber() {
-        return columns;
-    }
     public Cell getCell(final int rowIndex, final int columnIndex) {
-        return map[rowIndex][columnIndex];
+        if (rowIndex >= 0 && columnIndex >= 0) {
+            return map[rowIndex][columnIndex];
+        }
+        return null;
     }
     public void setPlayers(final List<Character> players) {
         for (int i = 0; i < players.size(); i++) {
@@ -38,11 +35,15 @@ public final class Map {
     }
     public void addPlayer(final Character player) {
         Point location = player.getLocation();
-        map[location.getX()][location.getY()].addCharacter(player.getId());
+        if (location.getX() >= 0 && location.getY() >= 0) {
+            map[location.getX()][location.getY()].addCharacter(player.getId());
+        }
     }
     public void deletePlayer(final Character player) {
         Point location = player.getLocation();
-        map[location.getX()][location.getY()].deleteCharacter(player.getId());
+        if (location.getX() >= 0 && location.getY() >= 0) {
+            map[location.getX()][location.getY()].deleteCharacter(player.getId());
+        }
     }
 
 }

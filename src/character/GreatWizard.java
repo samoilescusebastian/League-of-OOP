@@ -4,7 +4,7 @@ import game.Observer;
 
 import java.io.IOException;
 
-public class GreatWizard implements Observer {
+public final class GreatWizard implements Observer {
     private static GreatWizard greatWizard = null;
     @Override
     public void update(final fileio.FileSystem fs, final String message) throws IOException {
